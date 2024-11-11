@@ -20,6 +20,7 @@ public abstract class CommandBase implements CommandExecutor {
     /**
      * Initialization of the CommandBase.
      * Must be called before the command is used!
+     * Enter keys ALL CAPS
      * @param map The Map containing subcommands and their names.
      * @param baseCommand The BaseCommand that is called when none of the subcommands are eligible to be called.
      */

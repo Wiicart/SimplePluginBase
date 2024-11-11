@@ -84,7 +84,7 @@ public class Messenger<T extends Enum<T>> {
             for (Map.Entry<String, String> entry : placeholders.entrySet()) {
                 str = str.replace(entry.getKey(), entry.getValue());
             }
-            sender.sendMessage(translate(str));
+            sender.sendMessage(translate(prefix + str));
             return;
         }
         Bukkit.getLogger().info(strippedPrefix + " Unknown object type or value not found for message " + message.toString());
