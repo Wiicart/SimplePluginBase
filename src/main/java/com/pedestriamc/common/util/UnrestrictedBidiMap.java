@@ -13,12 +13,12 @@ import java.util.*;
  * @param <K> Key type
  * @param <V> Value type
  */
-public class NonStrictBidiMap<K, V> implements BidiMap<K, V> {
+public class UnrestrictedBidiMap<K, V> implements BidiMap<K, V> {
 
     private final Map<K, V> regular;
     private final Map<V, K> inverted;
 
-    public NonStrictBidiMap(){
+    public UnrestrictedBidiMap(){
         regular = new HashMap<>();
         inverted = new HashMap<>();
     }
@@ -103,12 +103,14 @@ public class NonStrictBidiMap<K, V> implements BidiMap<K, V> {
     }
 
     /**
+     * This method is lossy, due to the unrestricted nature of this map.
      * If any keys share the same value, the newest Key will be used on this map.
+     * Older duplicate keys that cannot be transferred over are thrown out.
      * @return a new NonStrictBidiMap
      */
     @Override
     public BidiMap<V, K> inverseBidiMap() {
-        BidiMap<V, K> map = new NonStrictBidiMap<>();
+        BidiMap<V, K> map = new UnrestrictedBidiMap<>();
         map.putAll(inverted);
         return map;
     }
@@ -124,13 +126,14 @@ public class NonStrictBidiMap<K, V> implements BidiMap<K, V> {
     }
 
     /**
-     * Not implemented.
-     * @return null
+     * Not implemented
+     * @return Will not return
+     * @throws UnsupportedOperationException Unsupported
      */
     @Override
     @Deprecated
-    public MapIterator<K, V> mapIterator() {
-        return null;
+    public MapIterator<K, V> mapIterator() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("UnrestrictedBidiMap does not implement BidMap#mapIterator().");
     }
 
     @Override

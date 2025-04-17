@@ -9,7 +9,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 @SuppressWarnings("unused")
-public class Messenger<T extends Enum<T>> {
+public class Messenger<T extends Enum<T> & CommonMessage> {
 
     private final EnumMap<T, Object> enumMap;
     private final String prefix;
@@ -28,7 +28,7 @@ public class Messenger<T extends Enum<T>> {
         strippedPrefix = ChatColor.stripColor(translate(prefix));
 
         for (T msg : clazz.getEnumConstants()) {
-            String configValue = msg.toString().replace("_", "-").toLowerCase();
+            String configValue = msg.getKey();
             try {
                 if(config.isList(configValue)) {
                     enumMap.put(msg, config.getStringList(configValue).toArray(new String[0]));
@@ -71,8 +71,8 @@ public class Messenger<T extends Enum<T>> {
     public void sendMessage(CommandSender sender, T message, Map<String, String> placeholders)
     {
         Object msg = enumMap.get(message);
-        if(msg instanceof String[]) {
-            for (String str : (String[]) msg) {
+        if(msg instanceof String[] array) {
+            for (String str : array) {
                 for (Map.Entry<String, String> entry : placeholders.entrySet()) {
                     str = str.replace(entry.getKey(), entry.getValue());
                 }
